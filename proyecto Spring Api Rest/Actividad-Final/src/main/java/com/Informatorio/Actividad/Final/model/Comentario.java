@@ -13,26 +13,27 @@ public class Comentario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    private String autor;
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "autor", nullable = false)
+    private Usuario usuario;
 
     private Date fechaCreacion;
-
+    
     @Size(max = 200)
     private String comentario;
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
      
     public Long getId() {
         return id;
     }
     public void setId(Long id) {
         this.id = id;
-    }
-
-    
-    public String getAutor() {
-        return autor;
-    }
-    public void setAutor(String autor) {
-        this.autor = autor;
     }
 
     public Date getFechaCreacion() {

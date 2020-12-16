@@ -4,6 +4,9 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.sql.Date;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * Usuario
  */
@@ -30,15 +33,11 @@ public class Usuario {
 
     private String pais;
 
-    @OneToMany(mappedBy = "usuario")
-    private List<Post> post;
-    
-    public List<Post> getPost() {
-        return post;
-    }
-    public void setPost(List<Post> post) {
-        this.post = post;
-    }
+    @OneToMany(mappedBy = "usuario" , cascade=CascadeType.ALL)
+    private List<Post> post = new ArrayList<>();
+
+    @OneToMany(mappedBy = "usuario" , cascade=CascadeType.ALL)
+    private List<Comentario> comentario = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -66,9 +65,14 @@ public class Usuario {
     public void setEmail(String email) {
         this.email = email;
     }
+    @JsonIgnore
+    public String getPassword() {
+        return password;
+    }
 
-    
-    
+    public void setPassword(String password) {
+        this.password = password;
+    }
     public Date getFechaCreacion() {
         return fechaCreacion;
     }
@@ -96,5 +100,13 @@ public class Usuario {
     public void setPais(String pais) {
         this.pais = pais;
     }
-    
+
+    public void addPost(Post post){
+        this.post.add(post);
+        post.setUsuario(this);
+    }
+    public void addComentario(Comentario comentario){
+        this.comentario.add(comentario);
+        comentario.setUsuario(this);
+    }
 }

@@ -35,7 +35,6 @@ public class ComentarioController {
     @PutMapping("/{comentarioId}")
     public ResponseEntity<?> editComentario(@PathVariable Long comentarioId,@Valid @RequestBody Comentario comentario) {
         Comentario comentarios = comentarioRepository.getOne(comentarioId);
-        comentarios.setAutor(comentario.getAutor());
         comentarios.setComentario(comentario.getComentario());
         return new ResponseEntity<>(comentarioRepository.save(comentarios), HttpStatus.OK);
     }

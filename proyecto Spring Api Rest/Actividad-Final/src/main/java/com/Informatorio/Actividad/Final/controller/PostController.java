@@ -1,5 +1,6 @@
 package com.Informatorio.Actividad.Final.controller;
 import com.Informatorio.Actividad.Final.model.Post;
+import com.Informatorio.Actividad.Final.model.Usuario;
 import com.Informatorio.Actividad.Final.repository.PostRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

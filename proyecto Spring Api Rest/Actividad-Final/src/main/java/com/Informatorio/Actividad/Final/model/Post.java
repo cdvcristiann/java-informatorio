@@ -3,6 +3,8 @@ import javax.persistence.Id;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.sql.Date;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * Post
  */
@@ -20,9 +22,8 @@ public class Post {
     private String Contenido;
 
     private Date fechaCreacion;
-
     
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "autor", nullable = false)
     private Usuario usuario;
 

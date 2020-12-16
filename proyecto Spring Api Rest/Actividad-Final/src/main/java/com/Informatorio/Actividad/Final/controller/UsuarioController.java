@@ -1,13 +1,17 @@
 package com.Informatorio.Actividad.Final.controller;
 import com.Informatorio.Actividad.Final.model.Usuario;
+import com.Informatorio.Actividad.Final.model.Post;
+import com.Informatorio.Actividad.Final.model.Comentario;
+import com.Informatorio.Actividad.Final.repository.ComentarioRepository;
 import com.Informatorio.Actividad.Final.repository.UsuarioRepository;
+import com.Informatorio.Actividad.Final.repository.PostRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
+
 /**
  * UsuarioController
  */
@@ -16,6 +20,10 @@ import java.util.HashMap;
 public class UsuarioController {
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private PostRepository postRepository;
+    @Autowired
+    private ComentarioRepository comentarioRepository;
 
     @GetMapping
     public ResponseEntity<?> getusuarios() {
@@ -25,6 +33,19 @@ public class UsuarioController {
     @PostMapping
     public ResponseEntity<?> createusuario(@RequestBody Usuario usuario) {
         return new ResponseEntity<>(usuarioRepository.save(usuario), HttpStatus.CREATED);
+    }
+    @PostMapping("/{id_usuario}/post")
+    public ResponseEntity<?> createpost(@PathVariable long id_usuario,@RequestBody Post post) {
+        Usuario usuario = usuarioRepository.getOne(id_usuario);
+        usuario.addPost(post);
+        return new ResponseEntity<>(postRepository.save(post), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{id_usuario}/comentario")
+    public ResponseEntity<?> createcomentario(@PathVariable long id_usuario,@RequestBody Comentario comentario) {
+        Usuario usuario = usuarioRepository.getOne(id_usuario);
+        usuario.addComentario(comentario);
+        return new ResponseEntity<>(comentarioRepository.save(comentario), HttpStatus.CREATED);
     }
 
     @PutMapping("/{usuarioId}")
@@ -37,7 +58,7 @@ public class UsuarioController {
         usuarios.setPais(usuario.getPais());
         return new ResponseEntity<>(usuarioRepository.save(usuarios), HttpStatus.OK);
     }
-    
+        
     @DeleteMapping("/{usuarioId}")
     public ResponseEntity<?> deleteusuario(@PathVariable Long usuarioId) {
         Usuario eliminarusuario = usuarioRepository.getOne(usuarioId);
